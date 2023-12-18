@@ -4,5 +4,16 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AssemblyName>ThemModdingHerds.$(MSBuildProjectName)</AssemblyName>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Authors>NightTheFox</Authors>
+        <PackageProjectUrl>https://github.com/ThemModdingHerds</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ThemModdingHerds/io</RepositoryUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+    <ItemGroup>
+      <None Update="README.md">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+    </ItemGroup>
 </Project>
