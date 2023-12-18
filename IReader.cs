@@ -11,4 +11,5 @@ public interface IReader : IStream
     public ulong ReadULong();
     public float ReadFloat();
     public double ReadDouble();
+    public string ReadPascal64String();
 }

@@ -53,4 +53,10 @@ public class BinaryWriter(System.IO.BinaryWriter writer) : IWriter
     {
         _writer.Write(Utils.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
     }
+    public void WritePascal64String(string value)
+    {
+        Write((ulong)value.Length);
+        foreach (char letter in value)
+            Write((byte)letter);
+    }
 }
