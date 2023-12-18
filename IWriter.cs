@@ -1,6 +1,7 @@
 namespace ThemModdingHerds.IO;
 public interface IWriter : IStream
 {
+    public void Write(byte[] value,bool withEndian = false);
     public void Write(byte value);
     public void Write(sbyte value);
     public void Write(short value);

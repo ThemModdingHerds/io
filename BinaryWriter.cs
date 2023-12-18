@@ -13,6 +13,10 @@ public class BinaryWriter(System.IO.BinaryWriter writer) : IWriter
     }
     public Endianness Endianness { get => _endianness; set => _endianness = value; }
     public long Offset { get => _writer.BaseStream.Position; set => _writer.BaseStream.Position = value; }
+    public void Write(byte[] value, bool withEndian = false)
+    {
+        _writer.Write(withEndian ? Utils.ConvertToEndianness(value,Endianness) : value);
+    }
     public void Write(byte value)
     {
         _writer.Write(value);
