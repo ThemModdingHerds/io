@@ -1,6 +1,7 @@
 namespace ThemModdingHerds.IO;
 public interface IReader : IStream
 {
+    public byte[] ReadBytes(int size,bool withEndian = false);
     public byte ReadByte();
     public sbyte ReadSByte();
     public short ReadShort();

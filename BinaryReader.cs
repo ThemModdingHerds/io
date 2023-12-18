@@ -15,9 +15,10 @@ public class BinaryReader(System.IO.BinaryReader reader) : IReader
     }
     public Endianness Endianness { get => _endianness; set => _endianness = value; }
     public long Offset { get => _reader.BaseStream.Position; set => _reader.BaseStream.Position = value; }
-    private byte[] Read(int size)
+    public byte[] ReadBytes(int size,bool withEndian = false)
     {
-        return _reader.ReadBytes(size);
+        byte[] data = _reader.ReadBytes(size);
+        return withEndian ? Utils.ConvertToEndianness(data,Endianness) : data;
     }
     public byte ReadByte()
     {
@@ -25,22 +26,22 @@ public class BinaryReader(System.IO.BinaryReader reader) : IReader
     }
     public double ReadDouble()
     {
-        byte[] array = Read(8);
+        byte[] array = ReadBytes(8);
         return Endianness == Endianness.Big ? BinaryPrimitives.ReadDoubleBigEndian(array) : BinaryPrimitives.ReadDoubleLittleEndian(array);
     }
     public float ReadFloat()
     {
-        byte[] array = Read(4);
+        byte[] array = ReadBytes(4);
         return Endianness == Endianness.Big ? BinaryPrimitives.ReadSingleBigEndian(array) : BinaryPrimitives.ReadSingleLittleEndian(array);
     }
     public int ReadInt()
     {
-        byte[] array = Read(4);
+        byte[] array = ReadBytes(4);
         return Endianness == Endianness.Big ? BinaryPrimitives.ReadInt32BigEndian(array) : BinaryPrimitives.ReadInt32LittleEndian(array);
     }
     public long ReadLong()
     {
-        byte[] array = Read(8);
+        byte[] array = ReadBytes(8);
         return Endianness == Endianness.Big ? BinaryPrimitives.ReadInt64BigEndian(array) : BinaryPrimitives.ReadInt64LittleEndian(array);
     }
     public sbyte ReadSByte()
@@ -49,22 +50,22 @@ public class BinaryReader(System.IO.BinaryReader reader) : IReader
     }
     public short ReadShort()
     {
-        byte[] array = Read(2);
+        byte[] array = ReadBytes(2);
         return Endianness == Endianness.Big ? BinaryPrimitives.ReadInt16BigEndian(array) : BinaryPrimitives.ReadInt16LittleEndian(array);
     }
     public uint ReadUInt()
     {
-        byte[] array = Read(4);
+        byte[] array = ReadBytes(4);
         return Endianness == Endianness.Big ? BinaryPrimitives.ReadUInt32BigEndian(array) : BinaryPrimitives.ReadUInt32LittleEndian(array);
     }
     public ulong ReadULong()
     {
-        byte[] array = Read(8);
+        byte[] array = ReadBytes(8);
         return Endianness == Endianness.Big ? BinaryPrimitives.ReadUInt64BigEndian(array) : BinaryPrimitives.ReadUInt64LittleEndian(array);
     }
     public ushort ReadUShort()
     {
-        byte[] array = Read(2);
+        byte[] array = ReadBytes(2);
         return Endianness == Endianness.Big ? BinaryPrimitives.ReadUInt16BigEndian(array) : BinaryPrimitives.ReadUInt16LittleEndian(array);
     }
     public string ReadPascal64String()
