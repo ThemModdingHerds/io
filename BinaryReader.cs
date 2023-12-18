@@ -67,4 +67,12 @@ public class BinaryReader(System.IO.BinaryReader reader) : IReader
         byte[] array = Read(2);
         return Endianness == Endianness.Big ? BinaryPrimitives.ReadUInt16BigEndian(array) : BinaryPrimitives.ReadUInt16LittleEndian(array);
     }
+    public string ReadPascal64String()
+    {
+        ulong length = ReadULong();
+        char[] chars = new char[length];
+        for(ulong i = 0;i < length;i++)
+            chars[i] = (char)ReadByte();
+        return new string(chars);
+    }
 }

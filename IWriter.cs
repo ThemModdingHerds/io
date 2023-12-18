@@ -11,4 +11,5 @@ public interface IWriter : IStream
     public void Write(ulong value);
     public void Write(float value);
     public void Write(double value);
+    public void WritePascal64String(string value);
 }
