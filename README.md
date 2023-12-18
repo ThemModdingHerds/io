@@ -1,6 +1,6 @@
 # IO
 
-Basic buffer library
+Basic IO library
 
 ## Usage
 
