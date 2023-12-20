@@ -71,9 +71,17 @@ public class BinaryReader(System.IO.BinaryReader reader) : IReader
     public string ReadPascal64String()
     {
         ulong length = ReadULong();
+        return ReadASCII(length);
+    }
+    public string ReadASCII(ulong length)
+    {
         char[] chars = new char[length];
         for(ulong i = 0;i < length;i++)
-            chars[i] = (char)ReadByte();
+            chars[i] = ReadASCIIChar();
         return new string(chars);
+    }
+    public char ReadASCIIChar()
+    {
+        return (char)ReadByte();
     }
 }

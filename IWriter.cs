@@ -13,4 +13,6 @@ public interface IWriter : IStream
     public void Write(float value);
     public void Write(double value);
     public void WritePascal64String(string value);
+    public void WriteASCII(string value);
+    public void WriteASCII(char value);
 }
