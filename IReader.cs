@@ -13,4 +13,6 @@ public interface IReader : IStream
     public float ReadFloat();
     public double ReadDouble();
     public string ReadPascal64String();
+    public string ReadASCII(ulong length);
+    public char ReadASCIIChar();
 }

@@ -60,7 +60,15 @@ public class Writer(BinaryWriter writer) : IWriter
     public void WritePascal64String(string value)
     {
         Write((ulong)value.Length);
+        WriteASCII(value);
+    }
+    public void WriteASCII(string value)
+    {
         foreach (char letter in value)
-            Write((byte)letter);
+            WriteASCII(letter);
+    }
+    public void WriteASCII(char value)
+    {
+        Write((byte)value);
     }
 }

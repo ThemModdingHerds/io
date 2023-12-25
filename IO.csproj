@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AssemblyName>ThemModdingHerds.$(MSBuildProjectName)</AssemblyName>
-        <Version>1.0.4</Version>
+        <Version>1.0.6</Version>
         <Authors>NightTheFox</Authors>
         <Description>Basic IO library</Description>
         <PackageProjectUrl>https://github.com/ThemModdingHerds</PackageProjectUrl>
@@ -15,6 +15,7 @@
         <IncludeSymbols>True</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageTags>io;library;endianness;bigendian;littleendian</PackageTags>
     </PropertyGroup>
     <ItemGroup>
       <None Update="README.md">
