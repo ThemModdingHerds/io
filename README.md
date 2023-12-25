@@ -5,9 +5,10 @@ Basic IO library
 ## Usage
 
 ```c#
+using ThemModdingHerds.IO.Binary;
 using ThemModdingHerds.IO;
 
-BinaryReader reader = new BinaryReader(SomeStream);
+Reader reader = new Reader(SomeStream);
 
 reader.Endianness = Endianness.Big; // set endianness to big
 

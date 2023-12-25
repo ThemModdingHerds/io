@@ -1,13 +1,13 @@
-namespace ThemModdingHerds.IO;
-public class BinaryWriter(System.IO.BinaryWriter writer) : IWriter
+namespace ThemModdingHerds.IO.Binary;
+public class Writer(BinaryWriter writer) : IWriter
 {
-    private readonly System.IO.BinaryWriter _writer = writer;
+    private readonly BinaryWriter _writer = writer;
     private Endianness _endianness = Utils.SystemEndianness;
-    public BinaryWriter(Stream stream) : this(new System.IO.BinaryWriter(stream))
+    public Writer(Stream stream) : this(new (stream))
     {
         
     }
-    public BinaryWriter(string path) : this(File.OpenWrite(path))
+    public Writer(string path) : this(File.OpenWrite(path))
     {
         
     }

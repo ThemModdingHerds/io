@@ -1,15 +1,15 @@
 using System.Buffers.Binary;
 
-namespace ThemModdingHerds.IO;
-public class BinaryReader(System.IO.BinaryReader reader) : IReader
+namespace ThemModdingHerds.IO.Binary;
+public class Reader(BinaryReader reader) : IReader
 {
-    private readonly System.IO.BinaryReader _reader = reader;
+    private readonly BinaryReader _reader = reader;
     private Endianness _endianness = Utils.SystemEndianness;
-    public BinaryReader(Stream stream) : this(new System.IO.BinaryReader(stream))
+    public Reader(Stream stream) : this(new BinaryReader(stream))
     {
         
     }
-    public BinaryReader(string path) : this(File.OpenRead(path))
+    public Reader(string path) : this(File.OpenRead(path))
     {
 
     }
