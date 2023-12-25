@@ -3,26 +3,25 @@ using System.Buffers.Binary;
 namespace ThemModdingHerds.IO.Binary;
 public class Reader(BinaryReader reader) : IReader
 {
-    private readonly BinaryReader _reader = reader;
-    private Endianness _endianness = Utils.SystemEndianness;
+    public BinaryReader BaseReader {get;} = reader;
     public Reader(Stream stream) : this(new BinaryReader(stream))
     {
-        
+
     }
     public Reader(string path) : this(File.OpenRead(path))
     {
 
     }
-    public Endianness Endianness { get => _endianness; set => _endianness = value; }
-    public long Offset { get => _reader.BaseStream.Position; set => _reader.BaseStream.Position = value; }
+    public Endianness Endianness { get; set; } = Utils.SystemEndianness;
+    public long Offset { get => BaseReader.BaseStream.Position; set => BaseReader.BaseStream.Position = value; }
     public byte[] ReadBytes(int size,bool withEndian = false)
     {
-        byte[] data = _reader.ReadBytes(size);
+        byte[] data = BaseReader.ReadBytes(size);
         return withEndian ? Utils.ConvertToEndianness(data,Endianness) : data;
     }
     public byte ReadByte()
     {
-        return _reader.ReadByte();
+        return BaseReader.ReadByte();
     }
     public double ReadDouble()
     {
@@ -46,7 +45,7 @@ public class Reader(BinaryReader reader) : IReader
     }
     public sbyte ReadSByte()
     {
-        return _reader.ReadSByte();
+        return BaseReader.ReadSByte();
     }
     public short ReadShort()
     {
