@@ -74,10 +74,10 @@ public class Reader(BinaryReader reader) : IReader
     }
     public string ReadASCII(ulong length)
     {
-        char[] chars = new char[length];
+        List<char> chars = [];
         for(ulong i = 0;i < length;i++)
-            chars[i] = ReadASCIIChar();
-        return new string(chars);
+            chars.Add(ReadASCIIChar());
+        return new string(chars.ToArray());
     }
     public char ReadASCIIChar()
     {
