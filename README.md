@@ -1,23 +1,14 @@
-# IO
+# [ThemModdingHerds.IO][src-path]
 
-Basic IO library
+basic IO library
 
-## Used by
+source code of [this NuGet package][nuget-url]
 
-- [ThemModdingHerds.GFS][tmh-gfs-url]
+[nuget-url]: https://www.nuget.org/packages/ThemModdingHerds.IO/
+[src-path]: /IO/
 
-## Usage
+## License
 
-```c#
-using ThemModdingHerds.IO.Binary;
-using ThemModdingHerds.IO;
+License is [MIT License][license-path]
 
-Reader reader = new Reader(SomeStream);
-
-reader.Endianness = Endianness.Big; // set endianness to big
-
-int reader.ReadInt(); // Read int as big endian
-
-```
-
-[tmh-gfs-url]: https://www.nuget.org/packages/ThemModdingHerds.GFS
+[license-path]: /IO/LICENSE
