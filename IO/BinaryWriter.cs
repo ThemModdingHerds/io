@@ -1,7 +1,7 @@
 using System.Numerics;
 
 namespace ThemModdingHerds.IO.Binary;
-public class Writer(BinaryWriter writer) : IWriter
+public class Writer(BinaryWriter writer) : IWriter, IDisposable
 {
     private BinaryWriter BaseWriter {get;} = writer;
     public Writer(Stream stream) : this(new BinaryWriter(stream))
@@ -123,6 +123,10 @@ public class Writer(BinaryWriter writer) : IWriter
     public void Dispose()
     {
         GC.SuppressFinalize(this);
-        BaseWriter.BaseStream.Dispose();
+        Close();
+    }
+    public void Close()
+    {
+        BaseWriter.BaseStream.Close();
     }
 }

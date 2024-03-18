@@ -121,6 +121,10 @@ public class Reader(BinaryReader reader) : IReader
     public void Dispose()
     {
         GC.SuppressFinalize(this);
-        BaseReader.BaseStream.Dispose();
+        Close();
+    }
+    public void Close()
+    {
+        BaseReader.BaseStream.Close();
     }
 }

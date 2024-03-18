@@ -6,4 +6,5 @@ public interface IStream : IDisposable
     public int OffsetInt {get; set;}
     public long Length {get;}
     public int LengthInt {get;}
+    public void Close();
 }
