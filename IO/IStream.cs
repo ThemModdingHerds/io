@@ -7,4 +7,6 @@ public interface IStream : IDisposable
     public long Length {get;}
     public int LengthInt {get;}
     public void Close();
+    public void Begin();
+    public long End();
 }

@@ -1,15 +1,21 @@
 using System.Buffers.Binary;
+using System.Drawing;
 using System.Numerics;
 
 namespace ThemModdingHerds.IO.Binary;
 public class Reader(BinaryReader reader) : IReader
 {
+    private long lastOffset = 0;
     public BinaryReader BaseReader {get;} = reader;
     public Reader(Stream stream) : this(new BinaryReader(stream))
     {
 
     }
     public Reader(string path) : this(File.OpenRead(path))
+    {
+
+    }
+    public Reader(Span<byte> bytes): this(bytes.ToArray())
     {
 
     }
@@ -26,6 +32,12 @@ public class Reader(BinaryReader reader) : IReader
     {
         byte[] data = BaseReader.ReadBytes(size);
         return withEndian ? Utils.ConvertToEndianness(data,Endianness) : data;
+    }
+    public void ReadBytes(Span<byte> bytes,bool withEndian = false)
+    {
+        byte[] data = BaseReader.ReadBytes(bytes.Length);
+        for(int i = 0;i < bytes.Length;i++)
+            bytes[i] = data[i];
     }
     public byte ReadByte()
     {
@@ -75,11 +87,30 @@ public class Reader(BinaryReader reader) : IReader
         byte[] array = ReadBytes(2);
         return Endianness == Endianness.Big ? BinaryPrimitives.ReadUInt16BigEndian(array) : BinaryPrimitives.ReadUInt16LittleEndian(array);
     }
+    public string ReadPascal8String()
+    {
+        byte length = ReadByte();
+        return ReadASCII(length);
+    }
+    public List<string> ReadPascal8Strings(ulong count) => ReadList((r) => r.ReadPascal8String(),count);
+    public string ReadPascal16String()
+    {
+        ushort length = ReadUShort();
+        return ReadASCII(length);
+    }
+    public List<string> ReadPascal16Strings(ulong count) => ReadList((r) => r.ReadPascal16String(),count);
+    public string ReadPascal32String()
+    {
+        uint length = ReadUInt();
+        return ReadASCII(length);
+    }
+    public List<string> ReadPascal32Strings(ulong count) => ReadList((r) => r.ReadPascal32String(),count);
     public string ReadPascal64String()
     {
         ulong length = ReadULong();
         return ReadASCII(length);
     }
+    public List<string> ReadPascal64Strings(ulong count) => ReadList((r) => r.ReadPascal64String(),count);
     public List<T> ReadList<T>(Func<IReader,T> cb,ulong count)
     {
         List<T> items = [];
@@ -87,7 +118,13 @@ public class Reader(BinaryReader reader) : IReader
             items.Add(cb(this));
         return items;
     }
-    public List<string> ReadPascal64Strings(ulong count) => ReadList((r) => r.ReadPascal64String(),count);
+    public T[] ReadArray<T>(Func<IReader,T> cb,ulong count)
+    {
+        T[] items = new T[count];
+        for(ulong i = 0;i < count;i++)
+            items[i] = cb(this);
+        return items;
+    }
     public Matrix4x4 ReadMatrix4x4()
     {
         const ulong MATRIX4X4_SIZE = 16;
@@ -118,6 +155,21 @@ public class Reader(BinaryReader reader) : IReader
     {
         return (char)ReadByte();
     }
+    public Color ReadRGBA()
+    {
+        byte[] bytes = ReadBytes(4,true);
+        return Color.FromArgb(bytes[3],bytes[0],bytes[1],bytes[2]);
+    }
+    public Color ReadARGB()
+    {
+        byte[] bytes = ReadBytes(4,true);
+        return Color.FromArgb(bytes[0],bytes[1],bytes[2],bytes[3]);
+    }
+    public Color ReadBGRA()
+    {
+        byte[] bytes = ReadBytes(4,true);
+        return Color.FromArgb(bytes[3],bytes[2],bytes[1],bytes[0]);
+    }
     public void Dispose()
     {
         GC.SuppressFinalize(this);
@@ -126,5 +178,13 @@ public class Reader(BinaryReader reader) : IReader
     public void Close()
     {
         BaseReader.BaseStream.Close();
+    }
+    public void Begin()
+    {
+        lastOffset = Offset;
+    }
+    public long End()
+    {
+        return Offset - lastOffset;
     }
 }

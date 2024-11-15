@@ -1,8 +1,11 @@
+using System.Drawing;
 using System.Numerics;
+using System.Runtime.Serialization;
 
 namespace ThemModdingHerds.IO.Binary;
-public class Writer(BinaryWriter writer) : IWriter, IDisposable
+public class Writer(BinaryWriter writer) : IWriter
 {
+    private long lastOffset = 0;
     private BinaryWriter BaseWriter {get;} = writer;
     public Writer(Stream stream) : this(new BinaryWriter(stream))
     {
@@ -16,6 +19,10 @@ public class Writer(BinaryWriter writer) : IWriter, IDisposable
     {
 
     }
+    public Writer(Span<byte> bytes): this(bytes.ToArray())
+    {
+
+    }
     public Endianness Endianness { get; set; } = Utils.SystemEndianness;
     public long Offset { get => BaseWriter.BaseStream.Position; set => BaseWriter.BaseStream.Position = value; }
     public int OffsetInt {get => (int)Offset; set => Offset = value;}
@@ -24,6 +31,10 @@ public class Writer(BinaryWriter writer) : IWriter, IDisposable
     public void Write(byte[] value, bool withEndian = false)
     {
         BaseWriter.Write(withEndian ? Utils.ConvertToEndianness(value,Endianness) : value);
+    }
+    public void Write(Span<byte> bytes,bool withEndian = false)
+    {
+        Write(bytes.ToArray(),withEndian);
     }
     public void Write(byte value)
     {
@@ -70,6 +81,24 @@ public class Writer(BinaryWriter writer) : IWriter, IDisposable
         foreach(T item in items)
             cb(this,item);
     }
+    public void WritePascal8String(string value)
+    {
+        Write((byte)value.Length);
+        WriteASCII(value);
+    }
+    public void WritePascal8Strings(IEnumerable<string> strings) => Write(strings,(w,s) => w.WritePascal8String(s));
+    public void WritePascal16String(string value)
+    {
+        Write((ushort)value.Length);
+        WriteASCII(value);
+    }
+    public void WritePascal16Strings(IEnumerable<string> strings) => Write(strings,(w,s) => w.WritePascal16String(s));
+    public void WritePascal32String(string value)
+    {
+        Write((uint)value.Length);
+        WriteASCII(value);
+    }
+    public void WritePascal32Strings(IEnumerable<string> strings) => Write(strings,(w,s) => w.WritePascal32String(s));
     public void WritePascal64String(string value)
     {
         Write((ulong)value.Length);
@@ -120,6 +149,27 @@ public class Writer(BinaryWriter writer) : IWriter, IDisposable
     {
         Write((byte)value);
     }
+    public void WriteRGBA(Color color)
+    {
+        Write(color.R);
+        Write(color.G);
+        Write(color.B);
+        Write(color.A);
+    }
+    public void WriteARGB(Color color)
+    {
+        Write(color.A);
+        Write(color.R);
+        Write(color.G);
+        Write(color.B);
+    }
+    public void WriteBGRA(Color color)
+    {
+        Write(color.B);
+        Write(color.G);
+        Write(color.R);
+        Write(color.A);
+    }
     public void Dispose()
     {
         GC.SuppressFinalize(this);
@@ -128,5 +178,13 @@ public class Writer(BinaryWriter writer) : IWriter, IDisposable
     public void Close()
     {
         BaseWriter.BaseStream.Close();
+    }
+    public void Begin()
+    {
+        lastOffset = Offset;
+    }
+    public long End()
+    {
+        return Offset - lastOffset;
     }
 }

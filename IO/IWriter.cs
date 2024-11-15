@@ -1,9 +1,11 @@
+using System.Drawing;
 using System.Numerics;
+using System.Runtime.Serialization;
 
 namespace ThemModdingHerds.IO;
 public interface IWriter : IStream
 {
-    public void Write(byte[] value,bool withEndian = false);
+    public void Write(Span<byte> values,bool withEndian = false);
     public void Write(byte value);
     public void Write(sbyte value);
     public void Write(short value);
@@ -17,6 +19,12 @@ public interface IWriter : IStream
     public void Write<T>(IEnumerable<T> items,Action<IWriter,T> cb);
     public void WriteASCII(string value);
     public void WriteASCII(char value);
+    public void WritePascal8String(string value);
+    public void WritePascal8Strings(IEnumerable<string> strings);
+    public void WritePascal16String(string value);
+    public void WritePascal16Strings(IEnumerable<string> strings);
+    public void WritePascal32String(string value);
+    public void WritePascal32Strings(IEnumerable<string> strings);
     public void WritePascal64String(string value);
     public void WritePascal64Strings(IEnumerable<string> strings);
     public void WriteMatrix4x4(Matrix4x4 matrix);
@@ -27,4 +35,7 @@ public interface IWriter : IStream
     public void WriteVector3(Vector3 vector);
     public void WriteVector3(float x,float y,float z);
     public void WriteVectors3(IEnumerable<Vector3> vectors);
+    public void WriteRGBA(Color color);
+    public void WriteARGB(Color color);
+    public void WriteBGRA(Color color);
 }
