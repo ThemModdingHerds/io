@@ -9,6 +9,7 @@ Basic IO library
 - [ThemModdingHerds.SGI][tmh-sgi-url]
 - [ThemModdingHerds.SGM][tmh-sgm-url]
 - [ThemModdingHerds.SGS][tmh-sgs-url]
+- [ThemModdingHerds.Foits][tmh-foits-url]
 
 ## Usage
 
@@ -34,3 +35,4 @@ int value = reader.ReadInt(); // Read int as big endian
 [tmh-sgi-url]: https://www.nuget.org/packages/ThemModdingHerds.SGI
 [tmh-sgm-url]: https://www.nuget.org/packages/ThemModdingHerds.SGM
 [tmh-sgs-url]: https://www.nuget.org/packages/ThemModdingHerds.SGS
+[tmh-foits-url]: https://www.nuget.org/packages/ThemModdingHerds.Foits
