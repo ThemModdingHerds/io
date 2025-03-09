@@ -1,6 +1,5 @@
 using System.Drawing;
 using System.Numerics;
-using System.Runtime.Serialization;
 
 namespace ThemModdingHerds.IO;
 public interface IWriter : IStream
@@ -35,6 +34,9 @@ public interface IWriter : IStream
     public void WriteVector3(Vector3 vector);
     public void WriteVector3(float x,float y,float z);
     public void WriteVectors3(IEnumerable<Vector3> vectors);
+    public void WriteVector4(Vector4 vector);
+    public void WriteVector4(float x,float y,float z,float w);
+    public void WriteVectors4(IEnumerable<Vector4> vectors);
     public void WriteRGBA(Color color);
     public void WriteARGB(Color color);
     public void WriteBGRA(Color color);

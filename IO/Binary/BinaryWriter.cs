@@ -1,12 +1,11 @@
 using System.Drawing;
 using System.Numerics;
-using System.Runtime.Serialization;
 
 namespace ThemModdingHerds.IO.Binary;
 public class Writer(BinaryWriter writer) : IWriter
 {
     private long lastOffset = 0;
-    private BinaryWriter BaseWriter {get;} = writer;
+    private BinaryWriter BaseWriter => writer;
     public Writer(Stream stream) : this(new BinaryWriter(stream))
     {
 
@@ -23,14 +22,14 @@ public class Writer(BinaryWriter writer) : IWriter
     {
 
     }
-    public Endianness Endianness { get; set; } = Utils.SystemEndianness;
-    public long Offset { get => BaseWriter.BaseStream.Position; set => BaseWriter.BaseStream.Position = value; }
-    public int OffsetInt {get => (int)Offset; set => Offset = value;}
-    public long Length {get => BaseWriter.BaseStream.Length;}
-    public int LengthInt {get => (int)Length;}
+    public Endianness Endianness {get;set;} = Utilities.SystemEndianness;
+    public long Offset {get => BaseWriter.BaseStream.Position;set => BaseWriter.BaseStream.Position = value;}
+    public int OffsetInt {get => (int)Offset;set => Offset = value;}
+    public long Length => BaseWriter.BaseStream.Length;
+    public int LengthInt => (int)Length;
     public void Write(byte[] value, bool withEndian = false)
     {
-        BaseWriter.Write(withEndian ? Utils.ConvertToEndianness(value,Endianness) : value);
+        BaseWriter.Write(withEndian ? Utilities.ConvertToEndianness(value,Endianness) : value);
     }
     public void Write(Span<byte> bytes,bool withEndian = false)
     {
@@ -46,35 +45,35 @@ public class Writer(BinaryWriter writer) : IWriter
     }
     public void Write(short value)
     {
-        BaseWriter.Write(Utils.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
+        BaseWriter.Write(Utilities.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
     }
     public void Write(ushort value)
     {
-        BaseWriter.Write(Utils.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
+        BaseWriter.Write(Utilities.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
     }
     public void Write(int value)
     {
-        BaseWriter.Write(Utils.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
+        BaseWriter.Write(Utilities.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
     }
     public void Write(uint value)
     {
-        BaseWriter.Write(Utils.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
+        BaseWriter.Write(Utilities.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
     }
     public void Write(long value)
     {
-        BaseWriter.Write(Utils.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
+        BaseWriter.Write(Utilities.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
     }
     public void Write(ulong value)
     {
-        BaseWriter.Write(Utils.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
+        BaseWriter.Write(Utilities.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
     }
     public void Write(float value)
     {
-        BaseWriter.Write(Utils.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
+        BaseWriter.Write(Utilities.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
     }
     public void Write(double value)
     {
-        BaseWriter.Write(Utils.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
+        BaseWriter.Write(Utilities.ConvertToEndianness(BitConverter.GetBytes(value),Endianness));
     }
     public void Write<T>(IEnumerable<T> items,Action<IWriter,T> cb)
     {
@@ -140,6 +139,15 @@ public class Writer(BinaryWriter writer) : IWriter
         Write(z);
     }
     public void WriteVectors3(IEnumerable<Vector3> vectors) => Write(vectors,(w,v) => w.WriteVector3(v));
+    public void WriteVector4(Vector4 vector) => WriteVector4(vector.X,vector.Y,vector.Z,vector.W);
+    public void WriteVector4(float x,float y,float z,float w)
+    {
+        Write(x);
+        Write(y);
+        Write(z);
+        Write(w);
+    }
+    public void WriteVectors4(IEnumerable<Vector4> vectors) => Write(vectors,(w,v) => w.WriteVector4(v));
     public void WriteASCII(string value)
     {
         foreach (char letter in value)

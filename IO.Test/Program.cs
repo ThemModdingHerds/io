@@ -2,7 +2,6 @@
 
 string path = "test.txt";
 
-Writer writer = new(path);
+using Writer writer = new(path);
 
-writer.WritePascal64String("ass");
-writer.Write(100UL);
+writer.Write(1234.5678);
